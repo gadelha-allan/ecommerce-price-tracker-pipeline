@@ -41,7 +41,7 @@ Instale as dependências:
 pip install -r requirements.txt
 ```
 
-Crie um arquivo .env baseado no example.env com suas credenciais:
+Crie um arquivo .env com suas credenciais:
 
 ```
 DB_USER=seu_usuario
