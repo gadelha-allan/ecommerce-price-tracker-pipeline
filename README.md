@@ -1,52 +1,62 @@
-# 🚀 Pipeline ETL: Mercado Livre Price Tracker
+# 🚀 Pipeline ELT: Mercado Livre Price Tracker
 
-Este projeto consiste em um pipeline de Engenharia de Dados automatizado, projetado para extrair, transformar e carregar (ETL) dados de preços de produtos da API do Mercado Livre. O pipeline foi desenvolvido com foco em robustez, manutenibilidade e automação na nuvem.
+Pipeline de Engenharia de Dados de nível profissional, focado na extração e monitoramento de preços do Mercado Livre. O projeto utiliza uma arquitetura **ELT (Extract, Load, Transform)** moderna, garantindo alta confiabilidade, testes automatizados e reprodutibilidade do ambiente.
 
-## 🛠 Tecnologias Utilizadas
+## 🛠 Tecnologias & Stack
 
 - **Linguagem:** Python 3.9+
-- **Processamento:** Pandas (Manipulação e limpeza de dados)
-- **Banco de Dados:** PostgreSQL (Armazenamento persistente)
-- **Conexão:** SQLAlchemy (ORM e integração SQL)
-- **Automação:** GitHub Actions (CI/CD para orquestração diária)
-- **Monitoramento:** Logging estruturado para rastreabilidade
+- **Orquestração de Dados:** dbt (Transformação e Qualidade)
+- **Infraestrutura:** Docker & Docker Compose
+- **Banco de Dados:** PostgreSQL
+- **Testes:** pytest (Testes de integração e unitários)
+- **Automação:** GitHub Actions (CI/CD)
+- **Visualização:** Metabase (Dashboard de acompanhamento)
 
 ## ⚙️ Arquitetura do Pipeline
 
-1. **Extract:** Consumo da API pública do Mercado Livre, com salvamento de log bruto em formato JSON.
-2. **Transform:** Limpeza dos dados, seleção de colunas, tipagem, tratamento de valores nulos e adição de metadados (`search_date`).
-3. **Load:** Carga dos dados tratados no PostgreSQL, garantindo a integridade histórica através de inserção incremental.
-4. **Automação:** Execução diária agendada via cron no GitHub Actions, com suporte a monitoramento de falhas.
+1. **Extract:** Extração dos dados via API do Mercado Livre utilizando Python.
+2. **Load:** Carga dos dados brutos (*raw*) no PostgreSQL via SQLAlchemy.
+3. **Transform (dbt):** Modelagem e limpeza de dados utilizando SQL dentro do Data Warehouse, com testes de integridade (*not_null*, *unique*).
+4. **Validation:** Testes de integração com pytest para garantir que o pipeline de ingestão esteja sempre operacional.
+5. **Analytics:** Visualização dos dados através de dashboards no Metabase.
 
 ## 🚀 Como rodar o projeto
 
 ### Pré-requisitos
 
-- Python 3.9 ou superior
-- Um banco de dados PostgreSQL acessível
-- Variáveis de ambiente configuradas
+- Docker e Docker Compose instalados.
+- Python 3.9+.
 
-### Instalação
+### Configuração do Ambiente
 
-Clone o repositório:
+1. Clone o repositório:
+   ```bash
+   git clone https://github.com/gadelha-allan/ecommerce-price-tracker-pipeline.git
+   cd ecommerce-price-tracker-pipeline
+   ```
+2. Suba a infraestrutura (PostgreSQL + Metabase):
+   ```bash
+   docker-compose up -d
+   ```
+3. Instale as dependências:
+   ```bash
+   pip install -r requirements.txt
+   ```
+ ### Executando o Pipeline
 
-```bash
-git clone https://github.com/gadelha-allan/ecommerce-price-tracker-pipeline.git
-cd ecommerce-price-tracker-pipeline
-```
+1. Rode os testes para garantir a integridade do código de extração:
+   ```bash
+   pytest
+   ```
+2. Execute a ingestão (Extração e Carga):
+   ```bash
+   python main.py
+   ```
+3. Rode as transformações e testes de qualidade no dbt:
+   ```bash
+   dbt run
+   dbt test
+   ```
 
-Instale as dependências:
 
-```bash
-pip install -r requirements.txt
-```
-
-Crie um arquivo .env com suas credenciais:
-
-```
-DB_USER=seu_usuario
-DB_PASS=sua_senha
-DB_HOST=seu_host
-DB_PORT=5432
-DB_NAME=seu_db
-```
+   
