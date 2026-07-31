@@ -6,3 +6,4 @@ python-dotenv
 pytest 
 pytest-mock 
 dbt-postgres
+boto3
